@@ -27,7 +27,11 @@ interface HomePageProps {
 const HomePage: React.FC<HomePageProps> = () => {
   const [newsData, setNewsData] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [showAllNews, setShowAllNews] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  // URL trang web khi bấm "Tải Ứng Dụng" - bạn có thể thay đổi URL này
+  const APP_DOWNLOAD_URL = 'https://play.google.com/store/apps'; // Thay đổi URL này theo ý muốn
 
   const fetchNews = async () => {
     try {
@@ -70,6 +74,19 @@ const HomePage: React.FC<HomePageProps> = () => {
   const handleViewAllNews = () => {
     navigate('/blogs'); 
   };
+
+  // Hàm xử lý khi bấm "Xem thêm tin tức"
+  const handleShowMoreNews = () => {
+    setShowAllNews(true);
+  };
+
+  // Hàm xử lý khi bấm "Tải Ứng Dụng"
+  const handleDownloadApp = () => {
+    window.open(APP_DOWNLOAD_URL, '_blank');
+  };
+
+  // Xác định số lượng tin tức hiển thị
+  const displayedNews = showAllNews ? newsData : newsData.slice(0, 8);
 
   const NewsImage: React.FC<{ imageUrl: string; title: string }> = ({ imageUrl, title }) => {
     const [imageError, setImageError] = useState(false);
@@ -168,6 +185,7 @@ const HomePage: React.FC<HomePageProps> = () => {
                           size="large" 
                           className="hero-btn secondary-btn"
                           style={{ display: 'block', width: 'fit-content' }}
+                          onClick={handleDownloadApp}
                         >
                           Tải Ứng Dụng
                         </Button>
@@ -211,7 +229,7 @@ const HomePage: React.FC<HomePageProps> = () => {
               ) : (
                 <>
                   <Row gutter={[24, 24]}>
-                    {newsData.slice(0, 100).map((news) => (
+                    {displayedNews.map((news) => (
                       <Col xs={24} sm={12} lg={6} key={news.id}>
                         <Card
                           hoverable
@@ -290,10 +308,27 @@ const HomePage: React.FC<HomePageProps> = () => {
                     ))}
                   </Row>
 
+                  {/* Hiển thị nút "Xem thêm tin tức" hoặc "Xem tất cả tin tức" */}
                   <div style={{ textAlign: 'center', marginTop: '50px' }}>
+                    {!showAllNews && newsData.length > 8 ? (
+                      <Button 
+                        size="large"
+                        className="view-more-news-btn"
+                        style={{
+                          padding: '12px 40px',
+                          height: 'auto',
+                          fontSize: '16px',
+                          marginRight: '16px'
+                        }}
+                        onClick={handleShowMoreNews}
+                      >
+                        Xem thêm tin tức ({newsData.length - 8} tin còn lại)
+                      </Button>
+                    ) : null}
+                    
                     <Button 
                       size="large"
-                      className="view-more-news-btn"
+                      className="view-all-news-btn"
                       style={{
                         padding: '12px 40px',
                         height: 'auto',
@@ -301,7 +336,7 @@ const HomePage: React.FC<HomePageProps> = () => {
                       }}
                       onClick={handleViewAllNews}
                     >
-                      Xem thêm các tin tức khác
+                      Xem tất cả tin tức
                     </Button>
                   </div>
                 </>
