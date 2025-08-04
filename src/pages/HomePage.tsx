@@ -71,9 +71,7 @@ const HomePage: React.FC<HomePageProps> = () => {
     navigate(`/blog/${newsId}`);
   };
 
-  const handleViewAllNews = () => {
-    navigate('/blogs'); 
-  };
+  // Removed navigation to /blogs - no longer needed
 
   // Hàm xử lý khi bấm "Xem thêm tin tức"
   const handleShowMoreNews = () => {
@@ -308,7 +306,7 @@ const HomePage: React.FC<HomePageProps> = () => {
                     ))}
                   </Row>
 
-                  {/* Hiển thị nút "Xem thêm tin tức" hoặc "Xem tất cả tin tức" */}
+                  {/* Hiển thị nút "Xem thêm tin tức" khi chưa hiển thị hết */}
                   <div style={{ textAlign: 'center', marginTop: '50px' }}>
                     {!showAllNews && newsData.length > 8 ? (
                       <Button 
@@ -317,27 +315,13 @@ const HomePage: React.FC<HomePageProps> = () => {
                         style={{
                           padding: '12px 40px',
                           height: 'auto',
-                          fontSize: '16px',
-                          marginRight: '16px'
+                          fontSize: '16px'
                         }}
                         onClick={handleShowMoreNews}
                       >
                         Xem thêm tin tức ({newsData.length - 8} tin còn lại)
                       </Button>
                     ) : null}
-                    
-                    <Button 
-                      size="large"
-                      className="view-all-news-btn"
-                      style={{
-                        padding: '12px 40px',
-                        height: 'auto',
-                        fontSize: '16px'
-                      }}
-                      onClick={handleViewAllNews}
-                    >
-                      Xem tất cả tin tức
-                    </Button>
                   </div>
                 </>
               )}
