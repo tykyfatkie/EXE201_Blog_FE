@@ -71,9 +71,6 @@ const HomePage: React.FC<HomePageProps> = () => {
     navigate(`/blog/${newsId}`);
   };
 
-  // Removed navigation to /blogs - no longer needed
-
-  // Hàm xử lý khi bấm "Xem thêm tin tức"
   const handleShowMoreNews = () => {
     setShowAllNews(true);
   };
@@ -319,7 +316,7 @@ const HomePage: React.FC<HomePageProps> = () => {
                         }}
                         onClick={handleShowMoreNews}
                       >
-                        Xem thêm tin tức ({newsData.length - 8} tin còn lại)
+                        Xem thêm
                       </Button>
                     ) : null}
                   </div>
