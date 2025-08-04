@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Layout, Button, Typography, Row, Col, Card, Spin } from 'antd';
 import { CalendarOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -21,26 +21,20 @@ interface NewsItem {
   };
 }
 
-interface HomePageProps {
-}
-
-const HomePage: React.FC<HomePageProps> = () => {
+const HomePage: React.FC = () => {
   const [newsData, setNewsData] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [showAllNews, setShowAllNews] = useState<boolean>(false);
   const navigate = useNavigate();
+  const newsSectionRef = useRef<HTMLDivElement>(null);
 
-  // URL trang web khi bấm "Tải Ứng Dụng" - bạn có thể thay đổi URL này
-  const APP_DOWNLOAD_URL = 'https://play.google.com/store/apps'; // Thay đổi URL này theo ý muốn
+  const APP_DOWNLOAD_URL = 'https://play.google.com/store/apps';
 
   const fetchNews = async () => {
     try {
       setLoading(true);
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/Blogs`);
-      
-      if (!response.ok) {
-      }
-      
+      if (!response.ok) return;
       const data = await response.json();
       setNewsData(data);
     } catch (error) {
@@ -75,22 +69,23 @@ const HomePage: React.FC<HomePageProps> = () => {
     setShowAllNews(true);
   };
 
-  // Hàm xử lý khi bấm "Tải Ứng Dụng"
   const handleDownloadApp = () => {
     window.open(APP_DOWNLOAD_URL, '_blank');
   };
 
-  // Xác định số lượng tin tức hiển thị
+  const handleScrollToNews = () => {
+    if (newsSectionRef.current) {
+      newsSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const displayedNews = showAllNews ? newsData : newsData.slice(0, 8);
 
   const NewsImage: React.FC<{ imageUrl: string; title: string }> = ({ imageUrl, title }) => {
     const [imageError, setImageError] = useState(false);
     const [imageLoading, setImageLoading] = useState(true);
 
-    const handleImageLoad = () => {
-      setImageLoading(false);
-    };
-
+    const handleImageLoad = () => setImageLoading(false);
     const handleImageError = () => {
       setImageError(true);
       setImageLoading(false);
@@ -164,17 +159,16 @@ const HomePage: React.FC<HomePageProps> = () => {
                       <Title level={1} className="hero-title">
                         MOME. Món MÔ cũng MÊ!
                       </Title>
-                      
                       <div className="hero-buttons">
                         <Button 
                           type="primary" 
                           size="large" 
                           className="hero-btn primary-btn"
                           style={{ marginBottom: '16px', display: 'block', width: 'fit-content' }}
+                          onClick={handleScrollToNews}
                         >
                           Khám Phá Ngay
                         </Button>
-                        
                         <Button 
                           type="default" 
                           size="large" 
@@ -193,7 +187,7 @@ const HomePage: React.FC<HomePageProps> = () => {
           </section>
 
           {/* News Center Section */}
-          <section className="news-section" style={{ padding: '80px 20px' }}>
+          <section ref={newsSectionRef} className="news-section" style={{ padding: '80px 20px' }}>
             <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
               <div style={{ textAlign: 'center', marginBottom: '60px' }}>
                 <Title level={2} className="gradient-text" style={{ 
@@ -303,9 +297,8 @@ const HomePage: React.FC<HomePageProps> = () => {
                     ))}
                   </Row>
 
-                  {/* Hiển thị nút "Xem thêm tin tức" khi chưa hiển thị hết */}
-                  <div style={{ textAlign: 'center', marginTop: '50px' }}>
-                    {!showAllNews && newsData.length > 8 ? (
+                  {!showAllNews && newsData.length > 8 && (
+                    <div style={{ textAlign: 'center', marginTop: '50px' }}>
                       <Button 
                         size="large"
                         className="view-more-news-btn"
@@ -318,8 +311,8 @@ const HomePage: React.FC<HomePageProps> = () => {
                       >
                         Xem thêm
                       </Button>
-                    ) : null}
-                  </div>
+                    </div>
+                  )}
                 </>
               )}
             </div>
