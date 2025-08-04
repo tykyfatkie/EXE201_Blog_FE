@@ -22,7 +22,6 @@ interface NewsItem {
 }
 
 interface HomePageProps {
-  // Props có thể được thêm vào sau nếu cần
 }
 
 const HomePage: React.FC<HomePageProps> = () => {
@@ -212,7 +211,7 @@ const HomePage: React.FC<HomePageProps> = () => {
               ) : (
                 <>
                   <Row gutter={[24, 24]}>
-                    {newsData.slice(0, 4).map((news) => (
+                    {newsData.slice(0, 100).map((news) => (
                       <Col xs={24} sm={12} lg={6} key={news.id}>
                         <Card
                           hoverable
