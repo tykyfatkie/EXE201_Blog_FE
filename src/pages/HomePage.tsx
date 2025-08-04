@@ -28,7 +28,7 @@ const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const newsSectionRef = useRef<HTMLDivElement>(null);
 
-  const APP_DOWNLOAD_URL = 'https://play.google.com/store/apps';
+  const APP_DOWNLOAD_URL = 'https://drive.google.com/file/d/18-tj0Te41d_XlSJQDAeOE_80Cr61Er-l/view?usp=sharing';
 
   const fetchNews = async () => {
     try {
