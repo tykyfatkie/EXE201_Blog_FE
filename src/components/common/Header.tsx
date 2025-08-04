@@ -14,7 +14,7 @@ import Logo from '../../images/logo.png';
 const { Header: AntHeader } = Layout;
 
 interface HeaderProps {
-  // Props có thể được thêm vào sau nếu cần
+  
 }
 
 const Header: React.FC<HeaderProps> = () => {

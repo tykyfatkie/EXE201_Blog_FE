@@ -152,7 +152,7 @@ const BlogDetail: React.FC = () => {
                 Trang chủ
               </Button>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>Chi tiết blog</Breadcrumb.Item>
+            <Breadcrumb.Item>Chi tiết</Breadcrumb.Item>
           </Breadcrumb>
         </div>
 
